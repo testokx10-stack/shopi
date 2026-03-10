@@ -1,0 +1,37 @@
+{% comment %}
+  Product Card Conversion Enhancements Block
+  Adds star ratings, social proof, and scarcity messaging to increase conversion rates
+{% endcomment %}
+
+{% assign product = closest.product %}
+
+{% capture children %}
+  {% unless product == blank %}
+    <div class="product-card-conversion-stack">
+      {% if product.metafields.reviews.rating.value.rating != blank %}
+        {% render 'product-card-rating', product: product, size: 'xs' %}
+      {% endif %}
+
+      {% render 'social-proof-badge', product: product %}
+    </div>
+  {% endunless %}
+{% endcapture %}
+
+{{ children }}
+
+{% stylesheet %}
+  .product-card-conversion-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Conversion Enhancements",
+  "tag": null,
+  "settings": []
+}
+{% endschema %}

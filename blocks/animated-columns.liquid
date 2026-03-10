@@ -1,0 +1,104 @@
+<section class="scroll-gallery-section">
+  {% assign selected_collection = collections[section.settings.collection] %}
+
+  {% if selected_collection and selected_collection.products_count > 0 %}
+    <div class="scroll-gallery">
+      {% assign limited_products = selected_collection.products | slice: 0, 6 %}
+      
+      {% for i in (1..section.settings.columns) %}
+        {% assign mod = i | modulo: 2 %}
+        <div class="column {% if mod == 0 %}column-down{% else %}column-up{% endif %}">
+          
+          {% assign img_index = 0 %}
+          {% for product in limited_products %}
+            {% if product.featured_image %}
+              {% assign img_index = img_index | plus: 1 %}
+              <div class="animated-img" style="--i:{{ img_index }};">
+                {{ product.featured_image 
+                  | image_url: width: 600 
+                  | image_tag: 
+                    alt: product.title,
+                    loading: 'lazy',
+                    widths: '300,400,600',
+                    sizes: '(max-width: 768px) 100vw, 33vw'
+                }}
+              </div>
+            {% endif %}
+          {% endfor %}
+
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p style="padding:20px; text-align:center;">No products found in this collection.</p>
+  {% endif %}
+</section>
+
+<style>
+.scroll-gallery {
+  display: flex;
+  gap: 20px;
+  overflow: hidden;
+}
+.scroll-gallery .column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.animated-img img {
+  width: 100%;
+  transform: translateY(50px);
+  opacity: 0;
+  transition: transform 0.8s ease, opacity 0.8s ease;
+}
+.column-up .animated-img img {
+  transform: translateY(50px);
+}
+.column-down .animated-img img {
+  transform: translateY(-50px);
+}
+.scroll-gallery .animated-img img.scroll-in {
+  transform: translateY(0);
+  opacity: 1;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const images = document.querySelectorAll('.animated-img img');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('scroll-in');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  images.forEach(img => observer.observe(img));
+});
+</script>
+
+{% schema %}
+{
+  "name": "Animated Columns",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select collection"
+    },
+    {
+      "type": "number",
+      "id": "columns",
+      "label": "Number of columns",
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Animated Columns"
+    }
+  ]
+}
+{% endschema %}
