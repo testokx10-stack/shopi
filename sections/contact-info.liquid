@@ -1,0 +1,461 @@
+{%- comment -%}
+  Contact Info Section
+  Displays contact information with styled cards and social media links
+{%- endcomment -%}
+
+<div class="contact-info-section" {{ section.shopify_attributes }}>
+  <div class="contact-info-section__container">
+    {%- if section.settings.show_email or section.settings.show_phone or section.settings.show_address -%}
+      <div class="contact-info-section__cards">
+        {%- if section.settings.show_email -%}
+          <a href="mailto:{{ section.settings.email }}" class="contact-info-section__card">
+            <div class="contact-info-section__card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <div class="contact-info-section__
+              card-content">
+              <span class="contact-info-section__card-label">Email Us</span>
+              <span class="contact-info-section__card-value">{{ section.settings.email }}</span>
+            </div>
+            <div class="contact-info-section__card-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.show_phone -%}
+          <a href="tel:{{ section.settings.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' }}" class="contact-info-section__card">
+            <div class="contact-info-section__card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+            </div>
+            <div class="contact-info-section__card-content">
+              <span class="contact-info-section__card-label">Call Us</span>
+              <span class="contact-info-section__card-value">{{ section.settings.phone }}</span>
+            </div>
+            <div class="contact-info-section__card-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </a>
+        {%- endif -%}
+
+        {%- if section.settings.show_address -%}
+          <a href="https://maps.google.com/?q={{ section.settings.address | url_encode }}" target="_blank" rel="noopener noreferrer" class="contact-info-section__card">
+            <div class="contact-info-section__card-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </div>
+            <div class="contact-info-section__card-content">
+              <span class="contact-info-section__card-label">Visit Us</span>
+              <span class="contact-info-section__card-value">{{ section.settings.address }}</span>
+            </div>
+            <div class="contact-info-section__card-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.show_social -%}
+      <div class="contact-info-section__social">
+        <span class="contact-info-section__social-label">{{ section.settings.social_label }}</span>
+        <div class="contact-info-section__social-links">
+          {%- if section.settings.instagram_url != blank -%}
+            <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="contact-info-section__social-link contact-info-section__social-link--instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+              <span class="contact-info-section__social-name">Instagram</span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.facebook_url != blank -%}
+            <a href="{{ section.settings.facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="contact-info-section__social-link contact-info-section__social-link--facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+              </svg>
+              <span class="contact-info-section__social-name">Facebook</span>
+            </a>
+          {%- endif -%}
+          {%- if section.settings.pinterest_url != blank -%}
+            <a href="{{ section.settings.pinterest_url }}" target="_blank" rel="noopener noreferrer" aria-label="Pinterest" class="contact-info-section__social-link contact-info-section__social-link--pinterest">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M8 12c0-2.2 1.8-4 4-4s4 1.8 4 4c0 2.2-1.8 4-4 4"></path>
+                <path d="M12 16v4"></path>
+                <path d="M9 20l3-4"></path>
+              </svg>
+              <span class="contact-info-section__social-name">Pinterest</span>
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% stylesheet %}
+  .contact-info-section {
+    width: 100%;
+  }
+
+  .contact-info-section__container {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .contact-info-section__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .contact-info-section__cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .contact-info-section__card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(139, 90, 43, 0.06) 0%, rgba(205, 133, 63, 0.04) 100%);
+    border-radius: 16px;
+    border: 1px solid rgba(139, 90, 43, 0.12);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-info-section__card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(139, 90, 43, 0.1) 0%, rgba(205, 133, 63, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .contact-info-section__card:hover::before {
+    opacity: 1;
+  }
+
+  .contact-info-section__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(139, 90, 43, 0.15);
+    border-color: rgba(139, 90, 43, 0.25);
+  }
+
+  .contact-info-section__card-icon {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #8b5a2b 0%, #a0522d 50%, #cd853f 100%);
+    border-radius: 12px;
+    color: #fef9f3;
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-info-section__card-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .contact-info-section__card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-info-section__card-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #8b5a2b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .contact-info-section__card-value {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: #3d2314;
+    line-height: 1.3;
+  }
+
+  .contact-info-section__card-arrow {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8b5a2b;
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-info-section__card:hover .contact-info-section__card-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .contact-info-section__card-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .contact-info-section__social {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 32px;
+    background: linear-gradient(135deg, rgba(139, 90, 43, 0.08) 0%, rgba(205, 133, 63, 0.05) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(139, 90, 43, 0.12);
+  }
+
+  .contact-info-section__social-label {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #3d2314;
+  }
+
+  .contact-info-section__social-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .contact-info-section__social-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 32px;
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-info-section__social-link--instagram {
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    color: white;
+  }
+
+  .contact-info-section__social-link--instagram:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(131, 58, 180, 0.3);
+  }
+
+  .contact-info-section__social-link--facebook {
+    background: linear-gradient(135deg, #1877f2 0%, #3b5998 100%);
+    color: white;
+  }
+
+  .contact-info-section__social-link--facebook:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(24, 119, 242, 0.3);
+  }
+
+  .contact-info-section__social-link--pinterest {
+    background: linear-gradient(135deg, #e60023 0%, #bd081c 100%);
+    color: white;
+  }
+
+  .contact-info-section__social-link--pinterest:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(230, 0, 35, 0.3);
+  }
+
+  .contact-info-section__social-link svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .contact-info-section__social-name {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  @media screen and (max-width: 749px) {
+    .contact-info-section__card {
+      padding: 20px;
+    }
+
+    .contact-info-section__card-icon {
+      width: 44px;
+      height: 44px;
+    }
+
+    .contact-info-section__card-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .contact-info-section__card-value {
+      font-size: 0.875rem;
+    }
+
+    .contact-info-section__social-link {
+      padding: 16px 24px;
+    }
+
+    .contact-info-section__social-link svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Contact Info",
+  "tag": "section",
+  "class": "contact-info-section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Contact Details"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_email",
+      "label": "Show email",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Email address",
+      "default": "support@yourstore.com"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Show phone",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Phone number",
+      "default": "+1 (555) 123-4567"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_address",
+      "label": "Show address",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "address",
+      "label": "Store address",
+      "default": "123 Commerce Street, New York, NY 10001"
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social links",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "social_label",
+      "label": "Social section label",
+      "default": "Follow Us"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Info"
+    }
+  ]
+}
+{% endschema %}

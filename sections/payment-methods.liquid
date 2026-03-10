@@ -1,0 +1,159 @@
+
+<div class="payment-methods page-width">
+  <div class="payment-methods__container">
+    <p class="payment-methods__label">{{ section.settings.label }}</p>
+    <div class="payment-methods__icons">
+      {%- if section.settings.show_visa -%}
+        <div class="payment-methods__icon" title="Visa">
+          {{ 'visa' | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_mastercard -%}
+        <div class="payment-methods__icon" title="Mastercard">
+          {{ 'master' | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_amex -%}
+        <div class="payment-methods__icon" title="American Express">
+          {{ 'american_express' | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_paypal -%}
+        <div class="payment-methods__icon" title="PayPal">
+          {{ 'paypal' | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_discover -%}
+        <div class="payment-methods__icon" title="Discover">
+          {{ 'discover' | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_cbk -%}
+        <div class="payment-methods__icon" title="Carte Bleue">
+          {{ 'carte_bleue' | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_diners -%}
+        <div class="payment-methods__icon" title="Diners Club">
+          {{ 'diners_club' | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.show_jcb -%}
+        <div class="payment-methods__icon" title="JCB">
+          {{ 'jcb' | payment_type_svg_tag: class: 'icon icon--full-color' }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% style %}
+.payment-methods {
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.payment-methods__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.payment-methods__label {
+  font-size: 0.875rem;
+  color: rgba(var(--color-foreground-rgb), 0.75);
+  margin: 0;
+}
+
+.payment-methods__icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.payment-methods__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  width: auto;
+}
+
+.payment-methods__icon svg {
+  height: 100%;
+  width: auto;
+  max-width: 50px;
+}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Payment Methods",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "default": "We accept the following payment methods",
+      "label": "Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visa",
+      "default": true,
+      "label": "Show Visa"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mastercard",
+      "default": true,
+      "label": "Show Mastercard"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_amex",
+      "default": true,
+      "label": "Show American Express"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_paypal",
+      "default": true,
+      "label": "Show PayPal"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discover",
+      "default": false,
+      "label": "Show Discover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cbk",
+      "default": false,
+      "label": "Show Carte Bleue"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_diners",
+      "default": false,
+      "label": "Show Diners Club"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_jcb",
+      "default": false,
+      "label": "Show JCB"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Payment Methods"
+    }
+  ]
+}
+{% endschema %}

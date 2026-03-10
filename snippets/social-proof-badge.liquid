@@ -1,0 +1,61 @@
+{%- doc -%}
+  Displays social proof messaging for increased conversion
+  Shows estimated purchase count based on product popularity
+
+  @param {object} product - The product object
+{%- enddoc -%}
+
+{% liquid
+  assign rating_count = product.metafields.reviews.rating_count | default: 0
+  assign sales_multiplier = 25
+
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+    assign rating_count = 156
+  endif
+
+  if rating_count > 0
+    assign estimated_sales = rating_count | times: sales_multiplier
+    assign text_key = 'social_proof_text'
+  endif
+%}
+
+{%- if rating_count > 0 and estimated_sales > 100 -%}
+  <div class="social-proof-badge">
+    {% liquid
+      if estimated_sales >= 1000
+        assign sales_display = estimated_sales | divided_by: 1000 | round: 1 | append: 'k'
+      else
+        assign sales_display = estimated_sales
+      endif
+    %}
+    <span class="social-proof-badge__icon">✓</span>
+    <span class="social-proof-badge__text">{{ sales_display }}+ people bought this</span>
+  </div>
+
+{%- endif -%}
+
+{% stylesheet %}
+  .social-proof-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(34, 197, 94, 0.08);
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: rgb(34, 197, 94);
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    .social-proof-badge__icon {
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+
+    .social-proof-badge__text {
+      letter-spacing: 0.3px;
+    }
+  {% endstylesheet %}

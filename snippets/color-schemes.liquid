@@ -1,0 +1,103 @@
+{% style %}
+  {% for scheme in settings.color_schemes -%}
+    {% assign scheme_classes = scheme_classes | append: ', .color-' | append: scheme.id %}
+    {% if forloop.index == 1 %}
+      :root,
+    {% endif %}
+    {% assign background_brightness = scheme.settings.background | color_brightness %}
+    {% if background_brightness < 64 %}
+      {% assign opacity_5_15 = 0.15 %}
+      {% assign opacity_10_25 = 0.25 %}
+      {% assign opacity_35_55 = 0.55 %}
+      {% assign opacity_40_60 = 0.60 %}
+      {% assign opacity_30_60 = 0.60 %}
+    {% else %}
+      {% assign opacity_5_15 = 0.05 %}
+      {% assign opacity_10_25 = 0.1 %}
+      {% assign opacity_35_55 = 0.35 %}
+      {% assign opacity_40_60 = 0.40 %}
+      {% assign opacity_30_60 = 0.30 %}
+    {% endif %}
+    .color-{{ scheme.id }} {
+        /* Cozy Book Nook Theme - Force warm cream background */
+        --color-background: #fef9f3;
+        --color-background-rgb: 254 249 243;
+        --opacity-5-15: {{ opacity_5_15 }};
+        --opacity-10-25: {{ opacity_10_25 }};
+        --opacity-35-55: {{ opacity_35_55 }};
+        --opacity-40-60: {{ opacity_40_60 }};
+        --opacity-30-60: {{ opacity_30_60 }};
+        --color-foreground: #3d2314;
+        --color-foreground-rgb: 61 35 20;
+        --color-foreground-heading: #3d2314;
+        --color-foreground-heading-rgb: 61 35 20;
+        --color-primary: #8b5a2b;
+        --color-primary-rgb: 139 90 43;
+        --color-primary-hover: #5c4033;
+        --color-primary-hover-rgb: 92 64 51;
+        --color-border: #8b5a2b;
+        --color-border-rgb: 139 90 43;
+        --color-shadow: #5c4033;
+        --color-shadow-rgb: 92 64 51;
+        /* Primary button - warm brown gradient style */
+        --color-primary-button-text: #fef9f3;
+        --color-primary-button-background: #8b5a2b;
+        --color-primary-button-border: #8b5a2b;
+        --color-primary-button-hover-text: #fef9f3;
+        --color-primary-button-hover-background: #5c4033;
+        --color-primary-button-hover-border: #5c4033;
+        /* Secondary button - outlined style */
+        --color-secondary-button-text: #3d2314;
+        --color-secondary-button-background: transparent;
+        --color-secondary-button-border: rgba(139, 90, 43, 0.3);
+        --color-secondary-button-hover-text: #fef9f3;
+        --color-secondary-button-hover-background: #8b5a2b;
+        --color-secondary-button-hover-border: #8b5a2b;
+        /* Inputs - warm cream style */
+        --color-input-background: rgba(255, 255, 255, 0.9);
+        --color-input-text: #3d2314;
+        --color-input-text-rgb: 61 35 20;
+        --color-input-border: rgba(139, 90, 43, 0.15);
+        --color-input-hover-background: rgba(255, 255, 255, 1);
+        /* Variant options */
+        --color-variant-background: rgba(255, 255, 255, 0.9);
+        --color-variant-border: rgba(139, 90, 43, 0.2);
+        --color-variant-text: #3d2314;
+        --color-variant-text-rgb: 61 35 20;
+        --color-variant-hover-background: rgba(139, 90, 43, 0.08);
+        --color-variant-hover-text: #3d2314;
+        --color-variant-hover-border: rgba(139, 90, 43, 0.3);
+        --color-selected-variant-background: rgba(139, 90, 43, 0.12);
+        --color-selected-variant-border: #8b5a2b;
+        --color-selected-variant-text: #3d2314;
+        --color-selected-variant-hover-background: rgba(139, 90, 43, 0.18);
+        --color-selected-variant-hover-text: #3d2314;
+        --color-selected-variant-hover-border: #5c4033;
+
+        --input-disabled-background-color: rgb(var(--color-foreground-rgb) / var(--opacity-10));
+        --input-disabled-border-color: rgb(var(--color-foreground-rgb) / var(--opacity-5-15));
+        --input-disabled-text-color: rgb(var(--color-foreground-rgb) / var(--opacity-50));
+        --color-foreground-muted: rgb(var(--color-foreground-rgb) / var(--opacity-60));
+        --font-h1--color: var(--color-foreground-heading);
+        --font-h2--color: var(--color-foreground-heading);
+        --font-h3--color: var(--color-foreground-heading);
+        --font-h4--color: var(--color-foreground-heading);
+        --font-h5--color: var(--color-foreground-heading);
+        --font-h6--color: var(--color-foreground-heading);
+
+        /* Shadows - warm brown tones */
+        {% if settings.drawer_drop_shadow %}
+          --shadow-drawer: 0px 4px 20px rgba(92, 64, 51, 0.15);
+        {% endif %}
+        {% if settings.popover_drop_shadow %}
+          --shadow-blur: 20px;
+          --shadow-popover: 0px 4px 20px rgba(92, 64, 51, 0.15);
+        {% endif %}
+      }
+  {% endfor %}
+
+  {{ scheme_classes | prepend: 'body' }} {
+    color: #3d2314;
+    background-color: #fef9f3;
+  }
+{% endstyle %}

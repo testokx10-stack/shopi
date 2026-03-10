@@ -1,0 +1,57 @@
+{%- doc -%}
+  Generates contextual, conversion-optimized add-to-cart button text
+  Dynamically adjusts messaging based on product characteristics
+
+  @param {object} product - The product object
+  @param {boolean} [can_add_to_cart] - Whether product is available
+{%- enddoc -%}
+
+{% liquid
+  assign variant = product.selected_or_first_available_variant
+  assign inventory_qty = variant.inventory_quantity | default: 999
+  assign rating_count = product.metafields.reviews.rating_count | default: 0
+
+  assign button_text = 'Add to Cart'
+  assign button_subtext = ''
+
+  if can_add_to_cart == false or product.available == false
+    assign button_text = 'Sold Out'
+  elsif inventory_qty <= 5 and inventory_qty > 0
+    assign button_text = 'Grab Yours Now'
+    assign button_subtext = 'Limited Stock'
+  elsif rating_count > 100
+    assign button_text = 'Add to Cart'
+    assign button_subtext = 'Trusted by 1000+'
+  else
+    assign button_text = 'Add to Cart'
+  endif
+%}
+
+<span class="enhanced-cta">
+  <span class="enhanced-cta__primary">{{ button_text }}</span>
+  {% if button_subtext != '' %}
+    <span class="enhanced-cta__secondary">{{ button_subtext }}</span>
+  {% endif %}
+</span>
+
+{% stylesheet %}
+  .enhanced-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    line-height: 1.2;
+  }
+
+  .enhanced-cta__primary {
+    font-weight: 600;
+    font-size: 1em;
+  }
+
+  .enhanced-cta__secondary {
+    font-size: 0.7em;
+    opacity: 0.85;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+{% endstylesheet %}

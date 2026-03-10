@@ -1,0 +1,214 @@
+{%- doc -%}
+  Displays trust indicators at checkout to reduce friction and increase conversions
+  Shows security badges, guarantees, and payment methods
+
+  @param {object} shop - The shop object for payment methods
+{%- enddoc -%}
+
+<div class="checkout-trust-badges">
+  <div class="trust-badges__grid">
+    <div class="trust-badge trust-badge--secure">
+      <svg class="trust-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      </svg>
+      <div class="trust-badge__content">
+        <div class="trust-badge__title">Secure Checkout</div>
+        <div class="trust-badge__text">SSL encrypted</div>
+      </div>
+    </div>
+
+    <div class="trust-badge trust-badge--shipping">
+      <svg class="trust-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="1" y="3" width="15" height="13"></rect>
+        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+        <circle cx="5.5" cy="18.5" r="2.5"></circle>
+        <circle cx="18.5" cy="18.5" r="2.5"></circle>
+      </svg>
+      <div class="trust-badge__content">
+        <div class="trust-badge__title">Fast Shipping</div>
+        <div class="trust-badge__text">2-5 business days</div>
+      </div>
+    </div>
+
+    <div class="trust-badge trust-badge--guarantee">
+      <svg class="trust-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <div class="trust-badge__content">
+        <div class="trust-badge__title">Money Back</div>
+        <div class="trust-badge__text">30-day guarantee</div>
+      </div>
+    </div>
+
+    <div class="trust-badge trust-badge--support">
+      <svg class="trust-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      <div class="trust-badge__content">
+        <div class="trust-badge__title">24/7 Support</div>
+        <div class="trust-badge__text">Dedicated team</div>
+      </div>
+    </div>
+  </div>
+
+  {% if shop.enabled_payment_types != blank %}
+    <div class="trust-badges__payment-methods">
+      <div class="payment-methods__label">We accept</div>
+      <div class="payment-methods__icons">
+        {%- for payment_type in shop.enabled_payment_types -%}
+          {%- case payment_type -%}
+            {%- when 'visa' -%}
+              <svg class="payment-icon" viewBox="0 0 48 32" role="img" aria-label="Visa">
+                <rect width="48" height="32" rx="4" fill="#1434CB"/>
+                <text x="24" y="20" font-size="12" font-weight="bold" fill="white" text-anchor="middle">VISA</text>
+              </svg>
+            {%- when 'mastercard' -%}
+              <svg class="payment-icon" viewBox="0 0 48 32" role="img" aria-label="Mastercard">
+                <rect width="48" height="32" rx="4" fill="#EB001B"/>
+                <circle cx="16" cy="16" r="8" fill="#FF5F00"/>
+                <circle cx="32" cy="16" r="8" fill="#FFB81C"/>
+              </svg>
+            {%- when 'american_express' -%}
+              <svg class="payment-icon" viewBox="0 0 48 32" role="img" aria-label="American Express">
+                <rect width="48" height="32" rx="4" fill="#006FCF"/>
+                <text x="24" y="20" font-size="10" font-weight="bold" fill="white" text-anchor="middle">AMEX</text>
+              </svg>
+            {%- when 'paypal' -%}
+              <svg class="payment-icon" viewBox="0 0 48 32" role="img" aria-label="PayPal">
+                <rect width="48" height="32" rx="4" fill="#003087"/>
+                <text x="24" y="20" font-size="9" font-weight="bold" fill="white" text-anchor="middle">PayPal</text>
+              </svg>
+            {%- when 'apple_pay' -%}
+              <svg class="payment-icon" viewBox="0 0 48 32" role="img" aria-label="Apple Pay">
+                <rect width="48" height="32" rx="4" fill="black"/>
+                <text x="24" y="20" font-size="8" font-weight="bold" fill="white" text-anchor="middle">Apple Pay</text>
+              </svg>
+            {%- when 'google_pay' -%}
+              <svg class="payment-icon" viewBox="0 0 48 32" role="img" aria-label="Google Pay">
+                <rect width="48" height="32" rx="4" fill="white" stroke="#E8E8E8" stroke-width="1"/>
+                <text x="24" y="20" font-size="7" font-weight="bold" fill="#3C4043" text-anchor="middle">Google Pay</text>
+              </svg>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="trust-badges__footer">
+    <p class="trust-text">By completing your order, you agree to our terms & conditions</p>
+  </div>
+</div>
+
+{% stylesheet %}
+  .checkout-trust-badges {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 8px;
+    padding: 20px 16px;
+    margin: 20px 0;
+  }
+
+  .trust-badges__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .trust-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px;
+    border-radius: 6px;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+  }
+
+  .trust-badge:hover {
+    border-color: rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .trust-badge__icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+    color: var(--color-primary, #000);
+  }
+
+  .trust-badge__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .trust-badge__title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-foreground);
+  }
+
+  .trust-badge__text {
+    font-size: 0.7rem;
+    color: var(--color-foreground);
+    opacity: 0.7;
+  }
+
+  .trust-badges__payment-methods {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .payment-methods__label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--color-foreground);
+  }
+
+  .payment-methods__icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .payment-icon {
+    width: 40px;
+    height: 28px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .trust-badges__footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding-top: 16px;
+    text-align: center;
+  }
+
+  .trust-text {
+    font-size: 0.75rem;
+    color: var(--color-foreground);
+    opacity: 0.6;
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .trust-badges__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .trust-badge {
+      padding: 10px;
+    }
+
+    .trust-badge__icon {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 6px;
+    }
+  }
+{% endstylesheet %}

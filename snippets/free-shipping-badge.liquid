@@ -1,0 +1,70 @@
+{%- doc -%}
+  Displays free shipping eligibility messaging
+  Increases perceived value and encourages purchases
+
+  @param {number} [min_order_value] - Minimum order value for free shipping in cents
+  @param {number} [cart_total] - Current cart total in cents
+{%- enddoc -%}
+
+{% liquid
+  assign min_order_value = min_order_value | default: 5000
+  assign cart_total = cart.total_price | default: 0
+  assign free_shipping_eligible = false
+
+  if cart_total >= min_order_value
+    assign free_shipping_eligible = true
+  endif
+
+  if free_shipping_eligible
+    assign remaining_amount = 0
+  else
+    assign remaining_cents = min_order_value | minus: cart_total
+    assign remaining_amount = remaining_cents | divided_by: 100.0
+  endif
+%}
+
+{%- if cart_total > 0 -%}
+  <div class="free-shipping-badge {% if free_shipping_eligible %}free-shipping-badge--eligible{% else %}free-shipping-badge--pending{% endif %}">
+    {% if free_shipping_eligible %}
+      <svg class="free-shipping-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h7m7-4h2m-2-5h2M2 8h16"></path>
+      </svg>
+      <span class="free-shipping-badge__text">Free shipping eligible!</span>
+    {% else %}
+      <span class="free-shipping-badge__text">Add ${{ remaining_amount | round: 2 }} more for free shipping</span>
+    {% endif %}
+  </div>
+
+{%- endif -%}
+
+{% stylesheet %}
+  .free-shipping-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      background: rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: rgb(37, 99, 235);
+      margin: 12px 0;
+    }
+
+    .free-shipping-badge--eligible {
+      background: rgba(34, 197, 94, 0.08);
+      border-color: rgba(34, 197, 94, 0.2);
+      color: rgb(34, 197, 94);
+    }
+
+    .free-shipping-badge__icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .free-shipping-badge__text {
+      letter-spacing: 0.3px;
+    }
+  {% endstylesheet %}

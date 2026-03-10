@@ -1,0 +1,32 @@
+{% comment %}
+  Judge.me Widgets Snippet
+  
+  This snippet renders Judge.me review widgets.
+  Widget types:
+  - judgeme_preview_badge: Star rating preview badge
+  - judgeme_review_widget: Full review widget
+  
+  The concierge_install parameter enables automatic installation features.
+{% endcomment %}
+
+{% liquid
+  assign widget_type = widget_type | default: 'judgeme_preview_badge'
+  assign concierge_install = concierge_install | default: false
+%}
+
+{% case widget_type %}
+  {% when 'judgeme_preview_badge' %}
+    {%- comment -%} Preview Badge - Star rating under product title {%- endcomment -%}
+    <div class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-template="product">
+      {{ product.metafields.judgeme.badge }}
+    </div>
+    
+  {% when 'judgeme_review_widget' %}
+    {%- comment -%} Full Review Widget - Complete reviews section {%- endcomment -%}
+    <div class="jdgm-widget jdgm-review-widget" data-id="{{ product.id }}" data-template="product">
+      {{ product.metafields.judgeme.widget }}
+    </div>
+    
+  {% else %}
+    {%- comment -%} Unknown widget type - output nothing {%- endcomment -%}
+{% endcase %}

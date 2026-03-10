@@ -1,0 +1,149 @@
+<meta charset="utf-8">
+<meta
+  http-equiv="X-UA-Compatible"
+  content="IE=edge"
+>
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
+<meta
+  name="view-transition"
+  content="same-origin"
+>
+<meta
+  name="theme-color"
+  content=""
+>
+
+{% comment %} SEO Keywords for Book Nook trending - Optimized for "booknook" {% endcomment %}
+{%- if request.page_type == 'index' -%}
+<meta name="keywords" content="book nook kits, DIY book nook, bookshelf decor, miniature book nook, book nook with lights, book nook diorama, book lover gift, reading nook, book shelf insert, magical book nook, cozy booknook, wooden book nook, booknook for sale, lego booknook, lego harry potter booknook, lego balrog, balrog booknook, lego miniature, lego diorama, harry potter booknook, lord of the rings booknook, fantasy booknook, popular booknook, trending booknook">
+<meta name="description" content="Discover magical book nook kits and DIY bookshelf inserts. Transform your shelf into enchanting miniature worlds. Free shipping on orders over $50. Perfect gifts for book lovers.">
+{%- elsif request.page_type == 'product' -%}
+<meta name="keywords" content="booknook, {{ product.title | escape | downcase }}, book nook, {{ product.type | escape | downcase }}, {{ product.vendor | escape | downcase }}, book shelf insert, buy booknook online, lego booknook, harry potter booknook, balrog booknook, miniature booknook">
+<meta name="description" content="Shop {{ product.title | escape }} - A beautiful booknook for your bookshelf. {{ product.description | strip_html | truncatewords: 25 }}. Free shipping available.">
+{%- elsif request.page_type == 'collection' -%}
+<meta name="keywords" content="booknook, {{ collection.title | escape | downcase }}, book nook collection, book shelf decor, diorama, miniature, book lover gifts, buy booknook, lego booknook, harry potter, balrog booknook, fantasy, trending">
+<meta name="description" content="Explore our {{ collection.title | escape }} collection of booknooks. Transform your bookshelf with magical miniature worlds. Quality booknooks for every book lover.">
+{%- else -%}
+<meta name="keywords" content="booknook, book nook, booknook store, cozy book nook, bookshelf insert, diorama book nook, miniature book nook, book shelf decor, reading nook, buy booknook, lego booknook, harry potter booknook, lego balrog, balrog booknook">
+{%- endif -%}
+
+{% comment %} Additional SEO meta tags {% endcomment %}
+<meta name="author" content="Cozy Book Nook">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="author" href="https://cozybooknook.store/">
+
+{% comment %} Geo targeting for local SEO {% endcomment %}
+<meta name="geo.region" content="US">
+<meta name="geo.placename" content="United States">
+
+{%- liquid
+  assign og_title = page_title | default: shop.name
+  assign og_url = canonical_url | default: request.origin
+  assign og_type = 'website'
+  assign og_description = page_description | default: shop.description | default: shop.name
+
+  if request.page_type == 'product'
+    assign og_type = 'product'
+  elsif request.page_type == 'article'
+    assign og_type = 'article'
+  elsif request.page_type == 'password'
+    assign og_url = request.origin
+  endif
+%}
+
+<meta
+  property="og:site_name"
+  content="{{ shop.name }}"
+>
+<meta
+  property="og:url"
+  content="{{ og_url }}"
+>
+<meta
+  property="og:title"
+  content="{{ og_title | escape }}"
+>
+<meta
+  property="og:type"
+  content="{{ og_type }}"
+>
+<meta
+  property="og:description"
+  content="{{ og_description | escape }}"
+>
+
+{%- if page_image -%}
+  <meta
+    property="og:image"
+    content="http:{{ page_image | image_url }}"
+  >
+  <meta
+    property="og:image:secure_url"
+    content="https:{{ page_image | image_url }}"
+  >
+  <meta
+    property="og:image:width"
+    content="{{ page_image.width }}"
+  >
+  <meta
+    property="og:image:height"
+    content="{{ page_image.height }}"
+  >
+{%- endif -%}
+
+{%- if request.page_type == 'product' -%}
+  <meta
+    property="og:price:amount"
+    content="{{ product.price | money_without_currency | strip_html }}"
+  >
+  <meta
+    property="og:price:currency"
+    content="{{ cart.currency.iso_code }}"
+  >
+{%- endif -%}
+
+{%- if settings.social_twitter_link != blank -%}
+  <meta
+    name="twitter:site"
+    content="{{ settings.social_twitter_link | split: 'twitter.com/' | last | prepend: '@' }}"
+  >
+{%- endif -%}
+<meta
+  name="twitter:card"
+  content="summary_large_image"
+>
+<meta
+  name="twitter:title"
+  content="{{ og_title | escape }}"
+>
+<meta
+  name="twitter:description"
+  content="{{ og_description | escape }}"
+>
+
+{% comment %} Optimized title for booknook search {% endcomment %}
+{%- if request.page_type == 'index' -%}
+<title>Book Nook Kits | DIY Miniature Bookshelf Decor | LEGO Harry Potter Booknook | Cozy Book Nook</title>
+{%- else -%}
+<title>
+  {{ page_title }}
+  {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+  {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+  {%- unless page_title contains shop.name %} &ndash; BookNook Store{% endunless -%}
+</title>
+{%- endif -%}
+
+<link
+  rel="canonical"
+  href="{{ canonical_url }}"
+>
+
+{% if page_description %}
+  <meta
+    name="description"
+    content="{{ page_description | escape }}"
+  >
+{% endif %}

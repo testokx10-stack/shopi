@@ -1,0 +1,117 @@
+{%- doc -%}
+  Displays a compact star rating and review count on product cards
+  Used to show social proof and customer satisfaction inline
+
+  @param {object} product - The product object
+  @param {string} [size] - Size preset (xs, sm, md, lg)
+{%- enddoc -%}
+
+{% liquid
+  assign rating = product.metafields.reviews.rating.value.rating
+  assign scale_max = product.metafields.reviews.rating.value.scale_max | default: 5
+  assign rating_count = product.metafields.reviews.rating_count | default: 0
+  assign size = size | default: 'sm'
+
+  if request.visual_preview_mode and product == blank
+    assign product = collections.all.products.first
+    assign rating = 4.5
+    assign scale_max = 5
+    assign rating_count = 128
+  endif
+%}
+
+{%- if rating != blank and rating_count > 0 -%}
+  {% liquid
+    assign decimal = rating | modulo: 1
+    assign decimal_rating = 0
+
+    if decimal >= 0.3 and decimal <= 0.7
+      assign decimal_rating = 0.5
+    elsif decimal > 0.7
+      assign decimal_rating = 1
+    endif
+
+    assign decimal_rounded = decimal_rating | ceil
+    assign svg_filled_stars = rating | floor | plus: decimal_rounded
+  %}
+
+  <div class="product-card__rating product-card__rating--{{ size }}">
+    <svg class="visually-hidden" style="width: 0; height: 0;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="presentation">
+      <defs>
+        <linearGradient id="card-star-half" x1="0" x2="100%" y1="0" y2="0">
+          <stop offset="50%" stop-color="currentColor"></stop>
+          <stop offset="50%" stop-color="transparent"></stop>
+        </linearGradient>
+        <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" id="card-star">
+          <path d="M31.547 12a.848.848 0 00-.677-.577l-9.427-1.376-4.224-8.532a.847.847 0 00-1.516 0l-4.218 8.534-9.427 1.355a.847.847 0 00-.467 1.467l6.823 6.664-1.612 9.375a.847.847 0 001.23.893l8.428-4.434 8.432 4.432a.847.847 0 001.229-.894l-1.615-9.373 6.822-6.665a.845.845 0 00.214-.869z" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <div class="product-card__stars" aria-label="{{ 'accessibility.rating' | t: rating: rating }}">
+      {%- for star in (1..5) -%}
+        <svg class="product-card__star {% if star <= svg_filled_stars %}filled{% endif %}" viewBox="0 0 32 32" role="presentation">
+          <use xlink:href="#card-star"{% if decimal_rating == 0.5 and star == svg_filled_stars %} fill="url(#card-star-half)"{% endif %}></use>
+        </svg>
+      {%- endfor -%}
+    </div>
+
+    <span class="product-card__rating-value">
+      {{ rating | round: 1 }}
+    </span>
+
+    <span class="product-card__review-count">
+      ({{ rating_count }})
+    </span>
+  </div>
+
+{%- endif -%}
+
+{% stylesheet %}
+  .product-card__rating {
+      display: flex;
+      align-items: center;
+      gap: var(--padding-xs);
+      font-size: var(--font-size--xs);
+      color: var(--color-foreground);
+    }
+
+    .product-card__rating--xs {
+      gap: 2px;
+    }
+
+    .product-card__stars {
+      display: flex;
+      gap: 1px;
+      align-items: center;
+    }
+
+    .product-card__star {
+      width: 14px;
+      height: 14px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1;
+      flex-shrink: 0;
+    }
+
+    .product-card__rating--xs .product-card__star {
+      width: 12px;
+      height: 12px;
+    }
+
+    .product-card__star.filled {
+      fill: currentColor;
+      stroke: none;
+    }
+
+    .product-card__rating-value {
+      font-weight: 500;
+      min-width: 24px;
+    }
+
+    .product-card__review-count {
+      opacity: 0.7;
+      font-size: 0.85em;
+    }
+  {% endstylesheet %}

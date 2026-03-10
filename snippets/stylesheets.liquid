@@ -1,0 +1,10 @@
+{{ 'overflow-list.css' | asset_url | preload_tag: as: 'style' }}
+{{ 'base.css' | asset_url | stylesheet_tag: preload: true }}
+{{ 'conversion-enhancements.css' | asset_url | stylesheet_tag }}
+
+{% comment %} Preload critical fonts to prevent FOIT {% endcomment %}
+{% if settings.font_heading_system or settings.font_body_system %}
+  {%- comment -%} System fonts don't need preloading {%- endcomment -%}
+{% else %}
+  <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+{% endif %}

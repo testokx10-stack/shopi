@@ -1,0 +1,473 @@
+
+<div class="shipping-page page-width">
+  <div class="shipping-page__header">
+    <h1 class="shipping-page__title">{{ section.settings.heading }}</h1>
+    <p class="shipping-page__subtitle">{{ section.settings.subtitle }}</p>
+  </div>
+
+  <div class="shipping-page__content">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'shipping_origin' -%}
+          <div class="shipping-section" {{ block.shopify_attributes }}>
+            <h2 class="shipping-section__title">
+              {% if block.settings.icon == 'box' %}📦{% elsif block.settings.icon == 'truck' %}🚚{% elsif block.settings.icon == 'clock' %}⏱️{% elsif block.settings.icon == 'globe' %}🌍{% elsif block.settings.icon == 'warning' %}⚠️{% else %}📋{% endif %}
+              {{ block.settings.title }}
+            </h2>
+            <div class="shipping-section__content">
+              {{ block.settings.content }}
+            </div>
+          </div>
+        {%- when 'tracking_info' -%}
+          <div class="shipping-section" {{ block.shopify_attributes }}>
+            <h2 class="shipping-section__title">
+              {% if block.settings.icon == 'box' %}📦{% elsif block.settings.icon == 'truck' %}🚚{% elsif block.settings.icon == 'clock' %}⏱️{% elsif block.settings.icon == 'globe' %}🌍{% elsif block.settings.icon == 'warning' %}⚠️{% else %}📋{% endif %}
+              {{ block.settings.title }}
+            </h2>
+            <div class="shipping-section__content">
+              {{ block.settings.content }}
+            </div>
+          </div>
+        {%- when 'important_notices' -%}
+          <div class="shipping-section" {{ block.shopify_attributes }}>
+            <h2 class="shipping-section__title">
+              {% if block.settings.icon == 'box' %}📦{% elsif block.settings.icon == 'truck' %}🚚{% elsif block.settings.icon == 'clock' %}⏱️{% elsif block.settings.icon == 'globe' %}🌍{% elsif block.settings.icon == 'warning' %}⚠️{% else %}📋{% endif %}
+              {{ block.settings.title }}
+            </h2>
+            <div class="shipping-section__content">
+              {{ block.settings.content }}
+            </div>
+          </div>
+        {%- when 'delivery_table' -%}
+          <div class="delivery-table" {{ block.shopify_attributes }}>
+            <h2 class="shipping-section__title">📅 {{ block.settings.title }}</h2>
+            <div class="delivery-table__wrapper">
+              <table class="delivery-table__table">
+                <thead>
+                  <tr>
+                    <th>{{ block.settings.column_destination }}</th>
+                    <th>{{ block.settings.column_time }}</th>
+                    <th>{{ block.settings.column_price }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {%- if block.settings.show_usa -%}
+                  <tr>
+                    <td><strong>🇺🇸 United States</strong></td>
+                    <td>{{ block.settings.usa_time }}</td>
+                    <td>{{ block.settings.usa_price }}</td>
+                  </tr>
+                  {%- endif -%}
+                  {%- if block.settings.show_uk -%}
+                  <tr>
+                    <td><strong>🇬🇧 United Kingdom</strong></td>
+                    <td>{{ block.settings.uk_time }}</td>
+                    <td>{{ block.settings.uk_price }}</td>
+                  </tr>
+                  {%- endif -%}
+                  {%- if block.settings.show_europe -%}
+                  <tr>
+                    <td><strong>🇪🇺 Europe</strong></td>
+                    <td>{{ block.settings.europe_time }}</td>
+                    <td>{{ block.settings.europe_price }}</td>
+                  </tr>
+                  {%- endif -%}
+                  {%- if block.settings.show_express -%}
+                  <tr class="express-row">
+                    <td><strong>⚡ Express Shipping</strong></td>
+                    <td>{{ block.settings.express_time }}</td>
+                    <td>{{ block.settings.express_price }}</td>
+                  </tr>
+                  {%- endif -%}
+                </tbody>
+              </table>
+            </div>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="shipping-page__footer">
+    <p>💬 {{ section.settings.contact_text }}</p>
+    <a href="{{ section.settings.contact_link }}" class="shipping-page__contact-btn">{{ section.settings.contact_btn_text }}</a>
+  </div>
+</div>
+
+{% style %}
+.shipping-page {
+  padding: 4rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.shipping-page__header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.shipping-page__title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.shipping-page__subtitle {
+  font-size: 1.125rem;
+  color: rgba(var(--color-foreground-rgb), 0.75);
+}
+
+.shipping-section {
+  margin-bottom: 2.5rem;
+}
+
+.shipping-section__title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.shipping-section__content {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(var(--color-foreground-rgb), 0.85);
+}
+
+.shipping-section__content p {
+  margin-bottom: 0.75rem;
+}
+
+.shipping-section__content ul {
+  margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.shipping-section__content li {
+  margin-bottom: 0.5rem;
+}
+
+.delivery-table {
+  margin: 2rem 0;
+}
+
+.delivery-table__wrapper {
+  overflow-x: auto;
+}
+
+.delivery-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.delivery-table__table th,
+.delivery-table__table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(var(--color-border-rgb));
+}
+
+.delivery-table__table th {
+  background: rgba(var(--color-foreground-rgb), 0.03);
+  font-weight: 600;
+}
+
+.delivery-table__table tr:hover {
+  background: rgba(var(--color-foreground-rgb), 0.02);
+}
+
+.express-row {
+  background: rgba(var(--color-primary-rgb), 0.05);
+}
+
+.express-row td {
+  font-weight: 500;
+}
+
+.shipping-page__footer {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(var(--color-border-rgb));
+}
+
+.shipping-page__footer p {
+  margin-bottom: 1rem;
+}
+
+.shipping-page__contact-btn {
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  background: rgb(var(--color-button-background));
+  color: rgb(var(--color-button-text));
+  text-decoration: none;
+  border-radius: var(--button-radius);
+  font-weight: 600;
+  transition: opacity 0.2s ease;
+}
+
+.shipping-page__contact-btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .shipping-page {
+    padding: 2rem 1rem;
+  }
+
+  .shipping-page__title {
+    font-size: 2rem;
+  }
+
+  .delivery-table__table th,
+  .delivery-table__table td {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Shipping & Delivery",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Shipping & Delivery",
+      "label": "Page Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "default": "We deliver worldwide! 📦",
+      "label": "Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "contact_text",
+      "default": "Have questions about your order? We're here to help!",
+      "label": "Contact text"
+    },
+    {
+      "type": "text",
+      "id": "contact_btn_text",
+      "default": "Contact Us",
+      "label": "Contact button text"
+    },
+    {
+      "type": "page",
+      "id": "contact_link",
+      "label": "Contact page"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shipping_origin",
+      "name": "Shipping Origin Info",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {"value": "box", "label": "📦 Box"},
+            {"value": "truck", "label": "🚚 Truck"},
+            {"value": "clock", "label": "⏱️ Clock"},
+            {"value": "globe", "label": "🌍 Globe"},
+            {"value": "warning", "label": "⚠️ Warning"},
+            {"value": "none", "label": "None"}
+          ],
+          "default": "box"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Ships from China",
+          "label": "Section Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>📦 <strong>All orders are shipped directly from our warehouse in China.</strong></p><p>We partner with DSers and AliExpress Standard Shipping to bring you the best delivery experience at no extra cost!</p>",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "delivery_table",
+      "name": "Delivery Times Table",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Estimated Delivery Times",
+          "label": "Table Title"
+        },
+        {
+          "type": "text",
+          "id": "column_destination",
+          "default": "Destination",
+          "label": "Column: Destination"
+        },
+        {
+          "type": "text",
+          "id": "column_time",
+          "default": "Delivery Time",
+          "label": "Column: Time"
+        },
+        {
+          "type": "text",
+          "id": "column_price",
+          "default": "Price",
+          "label": "Column: Price"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_usa",
+          "default": true,
+          "label": "Show USA"
+        },
+        {
+          "type": "text",
+          "id": "usa_time",
+          "default": "10-25 business days",
+          "label": "USA delivery time"
+        },
+        {
+          "type": "text",
+          "id": "usa_price",
+          "default": "FREE",
+          "label": "USA price"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_uk",
+          "default": true,
+          "label": "Show UK"
+        },
+        {
+          "type": "text",
+          "id": "uk_time",
+          "default": "12-22 business days",
+          "label": "UK delivery time"
+        },
+        {
+          "type": "text",
+          "id": "uk_price",
+          "default": "FREE",
+          "label": "UK price"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_europe",
+          "default": true,
+          "label": "Show Europe"
+        },
+        {
+          "type": "text",
+          "id": "europe_time",
+          "default": "15-30 business days",
+          "label": "Europe delivery time"
+        },
+        {
+          "type": "text",
+          "id": "europe_price",
+          "default": "FREE",
+          "label": "Europe price"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_express",
+          "default": true,
+          "label": "Show Express option"
+        },
+        {
+          "type": "text",
+          "id": "express_time",
+          "default": "5-12 business days",
+          "label": "Express delivery time"
+        },
+        {
+          "type": "text",
+          "id": "express_price",
+          "default": "$9.99",
+          "label": "Express price"
+        }
+      ]
+    },
+    {
+      "type": "tracking_info",
+      "name": "Tracking Info",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {"value": "box", "label": "📦 Box"},
+            {"value": "truck", "label": "🚚 Truck"},
+            {"value": "clock", "label": "⏱️ Clock"},
+            {"value": "globe", "label": "🌍 Globe"},
+            {"value": "warning", "label": "⚠️ Warning"},
+            {"value": "none", "label": "None"}
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Tracking Your Order",
+          "label": "Section Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>📍 <strong>You'll receive a tracking number</strong> via email once your order is shipped!</p><ul><li>Track your package in real-time</li><li>Get delivery updates straight to your inbox</li><li>Know exactly when your package will arrive</li></ul>",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "important_notices",
+      "name": "Important Notices",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            {"value": "box", "label": "📦 Box"},
+            {"value": "truck", "label": "🚚 Truck"},
+            {"value": "clock", "label": "⏱️ Clock"},
+            {"value": "globe", "label": "🌍 Globe"},
+            {"value": "warning", "label": "⚠️ Warning"},
+            {"value": "none", "label": "None"}
+          ],
+          "default": "warning"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Important Shipping Notes",
+          "label": "Section Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "default": "<p>⚠️ <strong>Please note the following:</strong></p><ul><li>🛃 <strong>Customs & Duties:</strong> Some countries may charge customs fees or import duties. These are the responsibility of the customer.</li><li>📦 <strong>Peak Season Delays:</strong> During holidays (Black Friday, Christmas, etc.), delivery may take slightly longer.</li><li>🌍 <strong>Remote Areas:</strong> Delivery to remote areas may take additional time.</li><li>📬 <strong>PO Boxes:</strong> We cannot ship to PO Boxes in some countries.</li></ul><p>We appreciate your patience and understanding! 💚</p>",
+          "label": "Content"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shipping & Delivery"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,513 @@
+{%- doc -%}
+  Renders an animated product showcase with 3-4 products per row.
+  Products animate vertically with smooth transitions.
+  All products are distributed evenly across columns.
+{%- enddoc -%}
+
+{% liquid
+  assign color_scheme = section.settings.color_scheme
+  if color_scheme == blank
+    assign color_scheme = 'scheme-1'
+  endif
+%}
+
+<style>
+  .animated-showcase {
+    position: relative;
+    padding: 60px 0;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .animated-showcase__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .animated-showcase__header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .animated-showcase__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-foreground);
+    margin: 0 0 10px;
+  }
+
+  .animated-showcase__subtitle {
+    font-size: 1rem;
+    color: white;
+    margin: 0;
+  }
+
+  .animated-showcase__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    height: 380px;
+    overflow: hidden;
+  }
+
+  .animated-showcase__column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .animated-showcase__column--up {
+    animation: scroll-up 40s linear infinite;
+  }
+
+  .animated-showcase__column--down {
+    animation: scroll-down 40s linear infinite;
+  }
+
+  .animated-showcase__column:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll-up {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-50%);
+    }
+  }
+
+  @keyframes scroll-down {
+    0% {
+      transform: translateY(-50%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  .animated-showcase__item {
+    flex-shrink: 0;
+    height: 380px;
+    background: var(--color-background);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    text-decoration: none;
+    position: relative;
+  }
+
+  .animated-showcase__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.6) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .animated-showcase__item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+  }
+
+  .animated-showcase__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .animated-showcase__item:hover .animated-showcase__image {
+    transform: scale(1.1);
+  }
+
+  .animated-showcase__badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+
+  .animated-showcase__content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    z-index: 2;
+    color: white;
+  }
+
+  .animated-showcase__product-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: white;
+    /* Override gradient text styles from base.css */
+    background: none;
+    -webkit-background-clip: unset;
+    background-clip: unset;
+    -webkit-text-fill-color: white;
+    animation: none;
+  }
+
+  .animated-showcase__price {
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .animated-showcase__compare-price {
+    text-decoration: line-through;
+    opacity: 0.6;
+    font-size: 0.8rem;
+  }
+
+  .animated-showcase__sale-price {
+    color: #ff6b6b;
+    font-weight: 700;
+  }
+
+  /* Navigation dots */
+  .animated-showcase__nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .animated-showcase__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(var(--color-foreground-rgb), 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+  }
+
+  .animated-showcase__dot.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    width: 30px;
+    border-radius: 5px;
+  }
+
+  /* Responsive */
+  @media screen and (max-width: 1024px) {
+    .animated-showcase__grid {
+      grid-template-columns: repeat(3, 1fr);
+      height: 400px;
+    }
+    
+    .animated-showcase__item {
+      height: 400px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .animated-showcase__grid {
+      grid-template-columns: repeat(2, 1fr);
+      height: 450px;
+      gap: 16px;
+    }
+    
+    .animated-showcase__item {
+      height: 450px;
+    }
+    
+    .animated-showcase__title {
+      font-size: 1.5rem;
+    }
+    
+    .animated-showcase__column {
+      gap: 16px;
+    }
+    
+    .animated-showcase__product-title {
+      font-size: 1rem;
+    }
+    
+    .animated-showcase__price {
+      font-size: 1rem;
+    }
+    
+    .animated-showcase__badge {
+      padding: 8px 16px;
+      font-size: 0.75rem;
+    }
+    
+    .animated-showcase__content {
+      padding: 24px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .animated-showcase__grid {
+      grid-template-columns: 1fr 1fr;
+      height: 400px;
+      gap: 12px;
+    }
+    
+    .animated-showcase__item {
+      height: 400px;
+    }
+    
+    .animated-showcase__title {
+      font-size: 1.3rem;
+    }
+    
+    .animated-showcase__subtitle {
+      font-size: 0.9rem;
+    }
+    
+    .animated-showcase__product-title {
+      font-size: 0.95rem;
+    }
+    
+    .animated-showcase__price {
+      font-size: 0.95rem;
+    }
+    
+    .animated-showcase__badge {
+      padding: 6px 12px;
+      font-size: 0.7rem;
+      top: 12px;
+      left: 12px;
+    }
+    
+    .animated-showcase__content {
+      padding: 16px;
+    }
+  }
+</style>
+
+<div class="animated-showcase color-{{ color_scheme }}">
+  <div class="animated-showcase__container">
+    <div class="animated-showcase__header">
+      <h2 class="animated-showcase__title">✨ Featured Treasures ✨</h2>
+      <p class="animated-showcase__subtitle">Discover our handpicked favorites</p>
+    </div>
+    
+    <div class="animated-showcase__grid" id="animated-showcase-grid">
+      {%- comment -%}Get all products and distribute them across 4 columns{%- endcomment -%}
+      {%- assign all_products = collections.all.products -%}
+      {%- assign total_products = all_products.size -%}
+      {%- assign columns = 4 -%}
+      
+      {%- comment -%}Column 1 - scrolls up (products at index 0, 4, 8, 12...){%- endcomment -%}
+      <div class="animated-showcase__column animated-showcase__column--up" data-column="1">
+        {%- comment -%}Render products twice for seamless loop{%- endcomment -%}
+        {%- for i in (1..2) -%}
+          {%- for product in all_products -%}
+            {%- assign mod = forloop.index0 | modulo: columns -%}
+            {%- if mod == 0 -%}
+              <a href="{{ product.url }}" class="animated-showcase__item">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="animated-showcase__badge">🔥 Sale</span>
+                {%- else -%}
+                  <span class="animated-showcase__badge">✨ New</span>
+                {%- endif -%}
+                
+                {%- if product.featured_image -%}
+                  <img 
+                    src="{{ product.featured_image | image_url: width: 400 }}"
+                    alt="{{ product.featured_image.alt | escape | default: product.title }}"
+                    class="animated-showcase__image"
+                    loading="lazy"
+                    width="300"
+                    height="380"
+                  >
+                {%- else -%}
+                  <div class="animated-showcase__image" style="background: linear-gradient(135deg, #e0e0e0, #f5f5f5);"></div>
+                {%- endif -%}
+                
+                <div class="animated-showcase__content">
+                  <h3 class="animated-showcase__product-title">{{ product.title | escape }}</h3>
+                  <p class="animated-showcase__price">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="animated-showcase__compare-price">{{ product.compare_at_price | money }}</span>
+                      <span class="animated-showcase__sale-price">{{ product.price | money }}</span>
+                    {%- else -%}
+                      {{ product.price | money }}
+                    {%- endif -%}
+                  </p>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+      
+      {%- comment -%}Column 2 - scrolls down (products at index 1, 5, 9, 13...){%- endcomment -%}
+      <div class="animated-showcase__column animated-showcase__column--down" data-column="2">
+        {%- for i in (1..2) -%}
+          {%- for product in all_products -%}
+            {%- assign mod = forloop.index0 | modulo: columns -%}
+            {%- if mod == 1 -%}
+              <a href="{{ product.url }}" class="animated-showcase__item">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="animated-showcase__badge">🔥 Sale</span>
+                {%- else -%}
+                  <span class="animated-showcase__badge">✨ New</span>
+                {%- endif -%}
+                
+                {%- if product.featured_image -%}
+                  <img 
+                    src="{{ product.featured_image | image_url: width: 400 }}"
+                    alt="{{ product.featured_image.alt | escape | default: product.title }}"
+                    class="animated-showcase__image"
+                    loading="lazy"
+                    width="300"
+                    height="380"
+                  >
+                {%- else -%}
+                  <div class="animated-showcase__image" style="background: linear-gradient(135deg, #e0e0e0, #f5f5f5);"></div>
+                {%- endif -%}
+                
+                <div class="animated-showcase__content">
+                  <h3 class="animated-showcase__product-title">{{ product.title | escape }}</h3>
+                  <p class="animated-showcase__price">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="animated-showcase__compare-price">{{ product.compare_at_price | money }}</span>
+                      <span class="animated-showcase__sale-price">{{ product.price | money }}</span>
+                    {%- else -%}
+                      {{ product.price | money }}
+                    {%- endif -%}
+                  </p>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+      
+      {%- comment -%}Column 3 - scrolls up (products at index 2, 6, 10, 14...){%- endcomment -%}
+      <div class="animated-showcase__column animated-showcase__column--up" data-column="3">
+        {%- for i in (1..2) -%}
+          {%- for product in all_products -%}
+            {%- assign mod = forloop.index0 | modulo: columns -%}
+            {%- if mod == 2 -%}
+              <a href="{{ product.url }}" class="animated-showcase__item">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="animated-showcase__badge">🔥 Sale</span>
+                {%- else -%}
+                  <span class="animated-showcase__badge">✨ New</span>
+                {%- endif -%}
+                
+                {%- if product.featured_image -%}
+                  <img 
+                    src="{{ product.featured_image | image_url: width: 400 }}"
+                    alt="{{ product.featured_image.alt | escape | default: product.title }}"
+                    class="animated-showcase__image"
+                    loading="lazy"
+                    width="300"
+                    height="380"
+                  >
+                {%- else -%}
+                  <div class="animated-showcase__image" style="background: linear-gradient(135deg, #e0e0e0, #f5f5f5);"></div>
+                {%- endif -%}
+                
+                <div class="animated-showcase__content">
+                  <h3 class="animated-showcase__product-title">{{ product.title | escape }}</h3>
+                  <p class="animated-showcase__price">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="animated-showcase__compare-price">{{ product.compare_at_price | money }}</span>
+                      <span class="animated-showcase__sale-price">{{ product.price | money }}</span>
+                    {%- else -%}
+                      {{ product.price | money }}
+                    {%- endif -%}
+                  </p>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+      
+      {%- comment -%}Column 4 - scrolls down (products at index 3, 7, 11, 15...){%- endcomment -%}
+      <div class="animated-showcase__column animated-showcase__column--down" data-column="4">
+        {%- for i in (1..2) -%}
+          {%- for product in all_products -%}
+            {%- assign mod = forloop.index0 | modulo: columns -%}
+            {%- if mod == 3 -%}
+              <a href="{{ product.url }}" class="animated-showcase__item">
+                {%- if product.compare_at_price > product.price -%}
+                  <span class="animated-showcase__badge">🔥 Sale</span>
+                {%- else -%}
+                  <span class="animated-showcase__badge">✨ New</span>
+                {%- endif -%}
+                
+                {%- if product.featured_image -%}
+                  <img 
+                    src="{{ product.featured_image | image_url: width: 400 }}"
+                    alt="{{ product.featured_image.alt | escape | default: product.title }}"
+                    class="animated-showcase__image"
+                    loading="lazy"
+                    width="300"
+                    height="380"
+                  >
+                {%- else -%}
+                  <div class="animated-showcase__image" style="background: linear-gradient(135deg, #e0e0e0, #f5f5f5);"></div>
+                {%- endif -%}
+                
+                <div class="animated-showcase__content">
+                  <h3 class="animated-showcase__product-title">{{ product.title | escape }}</h3>
+                  <p class="animated-showcase__price">
+                    {%- if product.compare_at_price > product.price -%}
+                      <span class="animated-showcase__compare-price">{{ product.compare_at_price | money }}</span>
+                      <span class="animated-showcase__sale-price">{{ product.price | money }}</span>
+                    {%- else -%}
+                      {{ product.price | money }}
+                    {%- endif -%}
+                  </p>
+                </div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    
+    <div class="animated-showcase__nav">
+      <button class="animated-showcase__dot active" data-slide="0" aria-label="Slide 1"></button>
+      <button class="animated-showcase__dot" data-slide="1" aria-label="Slide 2"></button>
+      <button class="animated-showcase__dot" data-slide="2" aria-label="Slide 3"></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Simple script for dot navigation visual feedback
+    const dots = document.querySelectorAll('.animated-showcase__dot');
+    let currentSlide = 0;
+    
+    // Update dots periodically (synced with 40s animation)
+    setInterval(() => {
+      currentSlide = (currentSlide + 1) % 3;
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('active', i === currentSlide);
+      });
+    }, 13333); // Sync with slower animation
+  })();
+</script>

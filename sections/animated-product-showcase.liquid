@@ -1,0 +1,24 @@
+{%- comment -%}
+  Animated Product Showcase Section
+  Displays an animated carousel of 3 products with modern effects
+{%- endcomment -%}
+
+{% render 'animated-product-showcase' %}
+
+{% schema %}
+{
+  "name": "Animated Product Showcase",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Animated Product Showcase"
+    }
+  ]
+}
+{% endschema %}

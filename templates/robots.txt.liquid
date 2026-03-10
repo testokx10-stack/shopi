@@ -1,0 +1,42 @@
+{% comment %}
+  Robots.txt template for cozybooknook.store
+  Optimized for booknook SEO trending
+{% endcomment %}
+
+{%- liquid
+  assign sitemap_url = 'https://cozybooknook.store/sitemap.xml'
+-%}
+
+User-agent: *
+Allow: /
+
+{%- comment -%} Allow static pages for SEO {%- endcomment -%}
+Allow: /pages/privacy-policy
+Allow: /pages/terms-of-service
+Allow: /pages/*
+
+{%- comment -%} Disallow admin and checkout pages {%- endcomment -%}
+Disallow: /admin
+Disallow: /checkout
+Disallow: /cart
+Disallow: /account
+Disallow: /search
+
+{%- comment -%} Allow all search engines to crawl products and collections {%- endcomment -%}
+Allow: /products
+Allow: /collections
+Allow: /blogs
+Allow: /pages
+
+{%- comment -%} Sitemap location {%- endcomment -%}
+Sitemap: {{ sitemap_url }}
+
+{%- comment -%} Major search engine specific rules - Crawl-delay is deprecated and ignored by Google {%- endcomment -%}
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /

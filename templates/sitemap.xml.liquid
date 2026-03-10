@@ -1,0 +1,76 @@
+{% comment %}
+  Custom Sitemap for cozybooknook.store
+  Optimized for booknook SEO trending
+  Note: Shopify auto-generates main sitemap at /sitemap.xml
+  This template can be used for custom pages
+{% endcomment %}
+{%- layout none -%}
+{%- capture xml_header -%}<?xml version="1.0" encoding="UTF-8"?>{%- endcapture -%}
+{{ xml_header }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  {%- comment -%} Homepage {%- endcomment -%}
+  <url>
+    <loc>https://cozybooknook.store/</loc>
+    <lastmod>{{ 'now' | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  {%- comment -%} All Products Page {%- endcomment -%}
+  <url>
+    <loc>https://cozybooknook.store/collections/all</loc>
+    <lastmod>{{ 'now' | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  {%- comment -%} Products {%- endcomment -%}
+  {%- for product in collections.all.products limit: 500 -%}
+  <url>
+    <loc>{{ product.url | absolute_url }}</loc>
+    <lastmod>{{ product.updated_at | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    {%- if product.featured_image -%}
+    <image:image>
+      <image:loc>{{ product.featured_image | image_url: width: 1200 }}</image:loc>
+      <image:title>{{ product.title | escape }} - Cozy Book Nook</image:title>
+      <image:caption>{{ product.description | strip_html | truncatewords: 20 | escape }}</image:caption>
+    </image:image>
+    {%- endif -%}
+  </url>
+  {%- endfor -%}
+
+  {%- comment -%} Collections {%- endcomment -%}
+  {%- for collection in collections -%}
+  <url>
+    <loc>{{ collection.url | absolute_url }}</loc>
+    <lastmod>{{ collection.updated_at | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {%- endfor -%}
+
+  {%- comment -%} Blog Posts {%- endcomment -%}
+  {%- for article in blogs.news.articles limit: 100 -%}
+  <url>
+    <loc>{{ article.url | absolute_url }}</loc>
+    <lastmod>{{ article.published_at | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  {%- endfor -%}
+
+  {%- comment -%} Static Pages {%- endcomment -%}
+  {%- for page in pages -%}
+  <url>
+    <loc>{{ page.url | absolute_url }}</loc>
+    <lastmod>{{ page.updated_at | date: '%Y-%m-%d' }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  {%- endfor -%}
+
+</urlset>

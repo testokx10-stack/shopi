@@ -1,0 +1,56 @@
+{%- comment -%}
+  Viral Popup - Newsletter Signup
+  Shows after 5 seconds on page to encourage email subscriptions
+{%- endcomment -%}
+
+<viral-popup>
+  <div class="popup-container">
+    <button type="button" class="popup-close" aria-label="Close popup">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+    
+    <div class="popup-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+      </svg>
+    </div>
+    
+    <h2 class="popup-title">Join Our Reading Circle</h2>
+    <p class="popup-subtitle">Subscribe for a chance to win a handcrafted book nook and get exclusive offers!</p>
+    
+    <div class="popup-prize">
+      <span class="popup-prize-text">Monthly Giveaway: Free Book Nook + Special Discounts</span>
+    </div>
+    
+    {%- if form.posted_successfully? -%}
+      <div class="popup-success">
+        <div class="popup-success-icon">✓</div>
+        <h3 class="popup-success-title">Welcome to the Circle!</h3>
+        <p class="popup-success-text">Thank you for subscribing! You're now entered in our monthly giveaway. Winner will be notified via email.</p>
+      </div>
+    {%- else -%}
+      {% form 'customer', class: 'popup-form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter, viral-popup, giveaway">
+        <input 
+          type="email" 
+          name="contact[email]" 
+          class="popup-input" 
+          placeholder="Your email address"
+          required
+          autocomplete="email"
+        >
+        <button type="submit" class="popup-button">
+          Enter Giveaway
+        </button>
+      {% endform %}
+      
+      <p class="popup-disclaimer">By subscribing, you agree to receive our newsletter with exclusive offers. Unsubscribe anytime. No purchase necessary.</p>
+    {%- endif -%}
+  </div>
+</viral-popup>
+
+<script src="{{ 'viral-popup.js' | asset_url }}" defer></script>
